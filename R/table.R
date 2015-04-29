@@ -89,7 +89,12 @@ setMethod("dbWriteTable", c("MySQLConnection", "character", "data.frame"),
     }
 
     if (!found || overwrite) {
-      sql <- sqlCreateTable(conn, name, value, row.names = row.names,
+      if( is.null(field.types)){
+        types = value
+      }else{
+        types = field.types
+      }
+      sql <- sqlCreateTable(conn, name, types, row.names = row.names,
         temporary = temporary)
       dbGetQuery(conn, sql)
     }
